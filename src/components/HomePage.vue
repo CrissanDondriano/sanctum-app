@@ -90,7 +90,7 @@ export default {
         },
         async addComment(postId) {
             try {
-                const response = await axios.post(this.$root.$data.apiUrl + '/comments', {
+                await axios.post(this.$root.$data.apiUrl + '/comments', {
                     post_id: postId,
                     content: this.newComment
                 });
