@@ -69,3 +69,21 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.card {
+  border-radius: 10px;
+}
+
+.btn-blue {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-blue:hover {
+    background-color: #0056b3;
+}
+</style>
