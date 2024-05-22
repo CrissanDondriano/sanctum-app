@@ -76,7 +76,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 body {
     background-image: url(https://img.freepik.com/free-photo/abstract-gradient-neon-lights_23-2149279180.jpg);
     background-size: cover;
