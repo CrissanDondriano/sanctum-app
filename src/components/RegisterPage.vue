@@ -70,20 +70,54 @@ export default {
 };
 </script>
 
-<style scoped>
-.card {
-  border-radius: 10px;
-}
+<style>
+    body {
+        background-image: url(https://img.freepik.com/free-photo/abstract-gradient-neon-lights_23-2149279180.jpg);
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
 
-.btn-blue {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
+    .container {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-.btn-blue:hover {
-    background-color: #0056b3;
-}
+    h4 {
+        color: rgb(58, 148, 103);
+        text-align: center;
+    }
+
+    .form-group {
+        position: relative;
+    }
+
+    .form-control {
+        border-radius: 5px;
+        padding: 1rem;
+    }
+
+    .btn-primary {
+        background-color:rgb(58, 150, 104);
+        border: none;
+        border-radius: 5px;
+        padding: 0.75rem;
+        font-size: 1rem;
+    }
+
+    .btn-primary:hover {
+        background-color: #035322;
+    }
+
+    .text-danger {
+        position: absolute;
+        bottom: -1.5rem;
+        left: 0;
+        font-size: 0.875rem;
+    }
 </style>
