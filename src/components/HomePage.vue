@@ -5,7 +5,7 @@
     <title>Post Management</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     
-
+</head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container d-flex justify-content-end">
@@ -70,6 +70,7 @@
             </div>
         </div>
     </div>
+    </body>
 </template>
     
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
