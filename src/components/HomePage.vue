@@ -1,65 +1,94 @@
 <template>
-<nav class="navbar">
-    <div class="container d-flex justify-content-end">
-        <ul class="nav">
-            <router-link to="/logout" class="col-6">Logout</router-link>
-        </ul>
-    </div>
-</nav>
-
-<div class="container mt-5">
-    <h2>Posts</h2>
-    <div v-for="post in posts" :key="post.id" class="card mb-3">
-        <div class="card-body">
-            <h5 class="card-title">{{ post.title }}</h5>
-            <p class="card-text">{{ post.content }}</p>
-            <p class="card-text"><small class="text-muted">by {{ post.user.name }}</small></p>
-            <button class="btn btn-primary" @click="editPost(post)">Edit</button>
-            <button class="btn btn-danger" @click="deletePost(post.id)">Delete</button>
-
-            <div class="mt-3">
-                <h6>Comments</h6>
-                <div v-for="comment in post.comments" :key="comment.id" class="mb-2">
-                    <p>{{ comment.content }} - <small>{{ comment.user.name }}</small></p>
-                    <button class="btn btn-sm btn-primary" @click="editComment(comment)">Edit</button>
-                    <button class="btn btn-sm btn-danger" @click="deleteComment(comment.id)">Delete</button>
+    <div>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">MyBlog</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <router-link to="/logout" class="nav-link">Logout</router-link>
+                        </li>
+                    </ul>
                 </div>
-                <form @submit.prevent="addComment(post.id)">
-                    <div class="input-group">
-                        <input type="text" v-model="newComment" placeholder="Add a comment" class="form-control">
-                        <button type="submit" class="btn btn-success">Post</button>
+            </div>
+        </nav>
+
+        <!-- Posts Section -->
+        <div class="container mt-5">
+            <h2 class="mb-4">Posts</h2>
+            <div v-for="post in posts" :key="post.id" class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.content }}</p>
+                    <p class="card-text"><small class="text-muted">by {{ post.user.name }}</small></p>
+                    <div class="d-flex justify-content-between mb-3">
+                        <button class="btn btn-primary" @click="editPost(post)">Edit</button>
+                        <button class="btn btn-danger" @click="deletePost(post.id)">Delete</button>
                     </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <button class="btn btn-success" @click="createPost">Add New Post</button>
 
-    <!-- Modal for creating/updating post -->
-    <div v-if="showPostModal" class="modal show d-block" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ editingPost ? 'Edit Post' : 'New Post' }}</h5>
-                    <button type="button" class="btn-close" @click="closePostModal"></button>
+                    <!-- Comments Section -->
+                    <div class="mt-3">
+                        <h6>Comments</h6>
+                        <div v-for="comment in post.comments" :key="comment.id" class="mb-2">
+                            <p>{{ comment.content }} - <small>{{ comment.user.name }}</small></p>
+                            <div class="d-flex justify-content-start">
+                                <button class="btn btn-sm btn-primary me-2" @click="editComment(comment)">Edit</button>
+                                <button class="btn btn-sm btn-danger" @click="deleteComment(comment.id)">Delete</button>
+                            </div>
+                        </div>
+                        <form @submit.prevent="addComment(post.id)" class="mt-3">
+                            <div class="input-group">
+                                <input type="text" v-model="newComment" placeholder="Add a comment" class="form-control"
+                                    required>
+                                <button type="submit" class="btn btn-success">Post</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form @submit.prevent="savePost">
-                        <div class="mb-3">
-                            <label for="postTitle" class="form-label">Title</label>
-                            <input type="text" v-model="postForm.title" class="form-control" id="postTitle" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="postContent" class="form-label">Content</label>
-                            <textarea v-model="postForm.content" class="form-control" id="postContent" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">{{ editingPost ? 'Update' : 'Create' }}</button>
-                    </form>
+            </div>
+            <button class="btn btn-success" @click="createPost">Add New Post</button>
+        </div>
+
+        <!-- Modal for creating/updating post -->
+        <div v-if="showPostModal" class="modal show d-block" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ editingPost ? 'Edit Post' : 'New Post' }}</h5>
+                        <button type="button" class="btn-close" @click="closePostModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form @submit.prevent="savePost">
+                            <div class="mb-3">
+                                <label for="postTitle" class="form-label">Title</label>
+                                <input type="text" v-model="postForm.title" class="form-control" id="postTitle"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="postContent" class="form-label">Content</label>
+                                <textarea v-model="postForm.content" class="form-control" id="postContent"
+                                    required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">{{ editingPost ? 'Update' : 'Create'
+                                }}</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Loader -->
+        <div v-if="loading" class="loading">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
     </div>
-</div>
 </template>
 
 <script>
@@ -76,18 +105,24 @@ export default {
                 id: null,
                 title: '',
                 content: ''
-            }
+            },
+            loading: false
         };
     },
     methods: {
         async fetchPosts() {
+            this.loading = true;
             try {
                 const response = await axios.get(this.$root.$data.apiUrl + '/posts');
                 this.posts = response.data;
             } catch (error) {
                 console.error('Error fetching posts:', error);
+            } finally {
+                this.loading = false;
             }
         },
+
+        //Adding comment
         async addComment(postId) {
             try {
                 await axios.post(this.$root.$data.apiUrl + '/comments', {
@@ -95,19 +130,23 @@ export default {
                     content: this.newComment
                 });
                 this.newComment = '';
-                this.fetchPosts(); // Refresh posts to show the new comment
+                this.fetchPosts();
             } catch (error) {
                 console.error('Error adding comment:', error);
             }
         },
+
+        //Deleting comment
         async deleteComment(commentId) {
             try {
                 await axios.delete(this.$root.$data.apiUrl + '/comments/' + commentId);
-                this.fetchPosts(); // Refresh posts to remove the deleted comment
+                this.fetchPosts();
             } catch (error) {
                 console.error('Error deleting comment:', error);
             }
         },
+
+        //Creating post
         createPost() {
             this.editingPost = false;
             this.postForm = {
@@ -117,6 +156,8 @@ export default {
             };
             this.showPostModal = true;
         },
+
+        //Editing post
         editPost(post) {
             this.editingPost = true;
             this.postForm = {
@@ -126,6 +167,8 @@ export default {
             };
             this.showPostModal = true;
         },
+
+        //Saving post
         async savePost() {
             try {
                 if (this.editingPost) {
@@ -134,15 +177,17 @@ export default {
                     await axios.post(this.$root.$data.apiUrl + '/posts', this.postForm);
                 }
                 this.closePostModal();
-                this.fetchPosts(); // Refresh posts to show the new/updated post
+                this.fetchPosts();
             } catch (error) {
                 console.error('Error saving post:', error);
             }
         },
+
+        //Deleting post
         async deletePost(postId) {
             try {
                 await axios.delete(this.$root.$data.apiUrl + '/posts/' + postId);
-                this.fetchPosts(); // Refresh posts to remove the deleted post
+                this.fetchPosts();
             } catch (error) {
                 console.error('Error deleting post:', error);
             }
@@ -163,11 +208,39 @@ export default {
     padding: 1rem;
 }
 
+.card {
+    border-radius: 10px;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.btn {
+    border-radius: 5px;
+}
+
 .modal {
     background: rgba(0, 0, 0, 0.5);
 }
 
 .modal-dialog {
     max-width: 500px;
+}
+
+.loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 2rem;
+    border-radius: 0.5rem;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
 }
 </style>
