@@ -74,7 +74,6 @@ export default {
             showPostModal: false,
             editingPost: false,
             postForm: {
-                id: null,
                 title: '',
                 content: ''
             }
@@ -115,7 +114,6 @@ export default {
         createPost() {
             this.editingPost = false;
             this.postForm = {
-                id: null,
                 title: '',
                 content: ''
             };
