@@ -22,7 +22,7 @@
             <div class="mt-3">
                 <h6>Comments</h6>
                 <div v-for="comment in post.comments" :key="comment.id" class="mb-2">
-                    <p>{{ comment.content }} - <small>{{ comment.user.name }}</small></p>
+                    <p>{{ comment.content }} - <small>{{ comment.user.name }}</small></p> 
                     <button class="btn btn-sm btn-primary" @click="editComment(comment)">Edit</button>
                     <button class="btn btn-sm btn-danger" @click="deleteComment(comment.id)">Delete</button>
                 </div>
@@ -60,6 +60,27 @@
             </div>
         </div>
     </div>
+
+     <!-- Modal for editing comment -->
+     <div v-if="showCommentModal" class="modal show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Comment</h5>
+                    <button type="button" class="btn-close" @click="closeCommentModal"></button>
+                </div>
+                <div class="modal-body">
+                    <form @submit.prevent="saveComment">
+                        <div class="mb-3">
+                            <label for="commentContent" class="form-label">Content</label>
+                            <textarea v-model="commentForm.content" class="form-control" id="commentContent" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </template>
 
@@ -75,6 +96,10 @@ export default {
             editingPost: false,
             postForm: {
                 title: '',
+                content: ''
+            },
+            showCommentModal: false,
+            commentForm: {
                 content: ''
             }
         };
@@ -109,6 +134,22 @@ export default {
                 this.fetchPosts(); // Refresh posts to remove the deleted comment
             } catch (error) {
                 console.error('Error deleting comment:', error);
+            }
+        },
+        editComment(comment) {
+            this.commentForm = {
+                id: comment.id,
+                content: comment.content
+            };
+            this.showCommentModal = true;
+        },
+        async saveComment() {
+            try {
+                await axios.put(this.$root.$data.apiUrl + '/comments/' + this.commentForm.id, this.commentForm);
+                this.closeCommentModal();
+                this.fetchPosts(); // Refresh posts to show the updated comment
+            } catch (error) {
+                console.error('Error updating comment:', error);
             }
         },
         createPost() {
@@ -151,6 +192,9 @@ export default {
         },
         closePostModal() {
             this.showPostModal = false;
+        },
+        closeCommentModal() {
+            this.showCommentModal = false;
         }
     },
 };
